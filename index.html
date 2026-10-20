@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria de Perfis</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Transição suave do modal */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+        .modal-exit {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.2s ease-in, transform 0.2s ease-in;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+
+    <!-- Efeito de iluminação de fundo (Glow background) -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Container Principal -->
+    <main class="w-full max-w-2xl bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-8 sm:p-10 rounded-3xl shadow-2xl z-10 text-center">
+        
+        <!-- Cabeçalho -->
+        <header class="mb-8">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 mb-4 border border-indigo-500/20">
+                <i class="fa-solid me-0 fa-user-group text-xl"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-2">Galeria de Perfis</h1>
+            <p class="text-slate-400 text-sm sm:text-base">Clique nos botões abaixo para visualizar a foto correspondente de cada pessoa.</p>
+        </header>
+
+        <!-- Grade de Botões/Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-6">
+            
+            <!-- Botão Gaspé -->
+            <button onclick="openModal('Gaspe', 'https://i.postimg.cc/Lg1fD5Kk/gaspe.avif')" 
+                    class="group relative overflow-hidden bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 hover:border-indigo-500/50 p-6 rounded-2xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10 active:scale-95 flex flex-col items-center justify-center gap-3">
+                <div class="w-16 h-16 rounded-full bg-slate-700/50 flex items-center justify-center text-slate-300 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 shadow-inner">
+                    <i class="fa-solid fa-user text-2xl"></i>
+                </div>
+                <div class="text-center">
+                    <span class="block text-lg font-semibold text-white group-hover:text-indigo-300 transition-colors">Gaspe</span>
+                    <span class="text-xs text-slate-400 mt-1 flex items-center justify-center gap-1">
+                        Ver imagem <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </div>
+            </button>
+
+            <!-- Botão Marcelo -->
+            <button onclick="openModal('Marcelo', 'https://i.postimg.cc/8f6W4cQb/marcelo.png')" 
+                    class="group relative overflow-hidden bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 hover:border-indigo-500/50 p-6 rounded-2xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10 active:scale-95 flex flex-col items-center justify-center gap-3">
+                <div class="w-16 h-16 rounded-full bg-slate-700/50 flex items-center justify-center text-slate-300 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 shadow-inner">
+                    <i class="fa-solid fa-user text-2xl"></i>
+                </div>
+                <div class="text-center">
+                    <span class="block text-lg font-semibold text-white group-hover:text-indigo-300 transition-colors">Marcelo</span>
+                    <span class="text-xs text-slate-400 mt-1 flex items-center justify-center gap-1">
+                        Ver imagem <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </div>
+            </button>
+
+        </div>
+
+        <!-- Rodapé simples -->
+        <footer class="mt-10 pt-6 border-t border-slate-800 text-xs text-slate-500">
+            Clique fora da foto ou na tecla <kbd class="px-1.5 py-0.5 text-[10px] bg-slate-800 border border-slate-700 rounded text-slate-300">ESC</kbd> para fechar o visualizador.
+        </footer>
+    </main>
+
+    <!-- Modal Lightbox (Modal de Imagem) -->
+    <div id="imageModal" 
+         class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-opacity duration-300"
+         onclick="handleBackdropClick(event)">
+        
+        <!-- Conteúdo do Modal -->
+        <div id="modalContent" class="relative bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl max-w-md w-full flex flex-col transform transition-all duration-300 scale-95 opacity-0">
+            
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/50">
+                <h3 id="modalTitle" class="text-lg font-semibold text-white">Perfil</h3>
+                <button onclick="closeModal()" 
+                        class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors focus:outline-none">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Imagem) -->
+            <div class="p-6 flex items-center justify-center bg-slate-950/50 relative min-h-[250px]">
+                <!-- Skeleton Loader -->
+                <div id="imageLoader" class="absolute inset-0 flex items-center justify-center bg-slate-900">
+                    <div class="w-8 h-8 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin"></div>
+                </div>
+
+                <img id="modalImage" 
+                     src="" 
+                     alt="Foto de Perfil" 
+                     class="max-h-[60vh] w-auto max-w-full rounded-xl object-contain shadow-lg hidden"
+                     onload="onImageLoad()"
+                     onerror="onImageError()">
+                
+                <!-- Mensagem de erro de imagem -->
+                <div id="errorMessage" class="hidden text-center p-4 text-red-400">
+                    <i class="fa-solid fa-circle-exclamation text-3xl mb-2 block"></i>
+                    <p class="text-sm">Não foi possível carregar a imagem.</p>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 border-t border-slate-800 bg-slate-900/50 flex justify-end">
+                <button onclick="closeModal()" 
+                        class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-xl transition-colors shadow-lg shadow-indigo-600/20 active:scale-95">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script com lógica interativa -->
+    <script>
+        const modal = document.getElementById('imageModal');
+        const modalContent = document.getElementById('modalContent');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalImage = document.getElementById('modalImage');
+        const imageLoader = document.getElementById('imageLoader');
+        const errorMessage = document.getElementById('errorMessage');
+
+        function openModal(name, imageUrl) {
+            modalTitle.textContent = name;
+            
+            // Reset de estados da imagem
+            modalImage.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            imageLoader.classList.remove('hidden');
+
+            modalImage.src = imageUrl;
+
+            // Mostrar modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // Pequeno delay para acionar a transição CSS
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            // Previne scroll do fundo
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            // Animação de saída
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                modalImage.src = '';
+                document.body.style.overflow = '';
+            }, 200);
+        }
+
+        function onImageLoad() {
+            imageLoader.classList.add('hidden');
+            modalImage.classList.remove('hidden');
+        }
+
+        function onImageError() {
+            imageLoader.classList.add('hidden');
+            errorMessage.classList.remove('hidden');
+        }
+
+        function handleBackdropClick(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Fechar com a tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
