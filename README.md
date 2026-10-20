@@ -12,8 +12,8 @@ Caso seu nome **não esteja no site** ou você **não consiga ver a sua imagem d
 2. Logo após a barra (`/`), digite o seu **código de acesso**, que segue o padrão:  
    **`seunome.png`**
 
-> **Exemplo de uso:**  
-> Se o seu nome for **Marcos**, o link final no navegador ficará assim:  
+> **Lembre-se:**  
+> Para adicionar você ao site, você tem que dizer ao responsável o nome que deseja, se por exemplo o nome que você colocou no cadastro é **Marcos**, o link final no navegador ficará assim:  
 > `https://marquezz-sys.github.io/imagens/marcos.png`
 
 ---
