@@ -42,7 +42,7 @@
     <div class="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
 
     <!-- Container Principal -->
-    <main class="w-full max-w-2xl bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-8 sm:p-10 rounded-3xl shadow-2xl z-10 text-center">
+    <main class="w-full max-w-3xl bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-8 sm:p-10 rounded-3xl shadow-2xl z-10 text-center">
         
         <!-- Cabeçalho -->
         <header class="mb-8">
@@ -54,7 +54,7 @@
         </header>
 
         <!-- Grade de Botões/Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-6">
             
             <!-- Botão Gaspé -->
             <button onclick="openModal('Gaspe', 'https://i.postimg.cc/Lg1fD5Kk/gaspe.avif')" 
@@ -84,17 +84,27 @@
                 </div>
             </button>
 
+            <!-- Botão Rafael -->
+            <button onclick="openModal('Rafael', 'https://i.postimg.cc/yx2k53sz/image.png')" 
+                    class="group relative overflow-hidden bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 hover:border-indigo-500/50 p-6 rounded-2xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10 active:scale-95 flex flex-col items-center justify-center gap-3">
+                <div class="w-16 h-16 rounded-full bg-slate-700/50 flex items-center justify-center text-slate-300 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 shadow-inner">
+                    <i class="fa-solid fa-user text-2xl"></i>
+                </div>
+                <div class="text-center">
+                    <span class="block text-lg font-semibold text-white group-hover:text-indigo-300 transition-colors">Rafael</span>
+                    <span class="text-xs text-slate-400 mt-1 flex items-center justify-center gap-1">
+                        Ver imagem <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </div>
+            </button>
+
         </div>
 
-        <!-- Mensagem com Link para Instruções -->
-        <div class="mt-8 p-4 bg-slate-800/40 border border-slate-800 rounded-2xl text-xs sm:text-sm text-slate-300 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 text-center">
+        <!-- Caixa de Instruções / GitHub -->
+        <div class="mt-8 p-4 bg-slate-800/50 border border-slate-700/60 rounded-2xl text-sm text-slate-300 flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
             <span>não consegue enxergar? abra aqui e leia as instruções:</span>
-            <a href="https://github.com/Marquezz-sys/imagens" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="text-indigo-400 hover:text-indigo-300 underline font-medium break-all hover:underline transition-colors inline-flex items-center gap-1">
-                https://github.com/Marquezz-sys/imagens
-                <i class="fa-solid fa-up-right-from-square text-[10px]"></i>
+            <a href="https://github.com/Marquezz-sys/imagens" target="_blank" class="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 font-medium underline underline-offset-4 transition-colors shrink-0">
+                github.com/Marquezz-sys/imagens <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>
         </div>
 
