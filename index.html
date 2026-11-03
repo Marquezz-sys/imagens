@@ -129,4 +129,142 @@
         </div>
 
         <!-- Caixa de Instruções / GitHub -->
-<!-- ... existing code -->
+        <div class="mt-8 p-4 sm:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-300 text-sm">
+            <div class="flex items-center gap-3 text-left">
+                <i class="fa-solid fa-circle-info text-indigo-400 text-lg flex-shrink-0"></i>
+                <span>não consegue enxergar? abra aqui e leia as instruções:</span>
+            </div>
+            <a href="https://github.com/Marquezz-sys/imagens" target="_blank" rel="noopener noreferrer" 
+               class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 font-medium transition-colors border border-indigo-500/30 whitespace-nowrap group">
+                https://github.com/Marquezz-sys/imagens
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+            </a>
+        </div>
+
+        <!-- Dica de Rodapé -->
+        <p class="text-xs text-slate-500 mt-6 flex items-center justify-center gap-2">
+            <span>Clique fora da foto ou na tecla</span>
+            <kbd class="px-2 py-0.5 text-[10px] font-semibold text-slate-400 bg-slate-800 border border-slate-700 rounded-md">ESC</kbd>
+            <span>para fechar o visualizador.</span>
+        </p>
+
+    </main>
+
+    <!-- Modal do Lightbox / Visualizador de Imagem -->
+    <div id="imageModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-all duration-300" onclick="closeModalOnOverlay(event)">
+        <div id="modalCard" class="relative max-w-4xl w-full bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col transform transition-all duration-300 scale-95 opacity-0">
+            
+            <!-- Barra Superior do Modal -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90">
+                <div class="flex items-center gap-3">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <h3 id="modalTitle" class="ml-3 font-semibold text-slate-200 text-lg"></h3>
+                </div>
+                
+                <!-- Botão Fechar -->
+                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Área da Imagem -->
+            <div class="p-4 sm:p-6 flex items-center justify-center bg-slate-950/50 min-h-[300px] max-h-[75vh] overflow-auto">
+                <!-- Indicador de Carregamento -->
+                <div id="modalSpinner" class="flex flex-col items-center gap-3 text-indigo-400">
+                    <i class="fa-solid fa-circle-notch fa-spin text-3xl"></i>
+                    <span class="text-sm text-slate-400">Carregando imagem...</span>
+                </div>
+
+                <!-- Imagem Real -->
+                <img id="modalImage" src="" alt="Foto do perfil" class="hidden max-h-[65vh] w-auto max-w-full object-contain rounded-xl shadow-lg border border-slate-800">
+                
+                <!-- Mensagem de Erro (se a imagem falhar) -->
+                <div id="modalError" class="hidden flex-col items-center gap-3 text-rose-400 py-8 text-center">
+                    <i class="fa-solid fa-triangle-exclamation text-4xl mb-1"></i>
+                    <p class="font-medium">Não foi possível carregar esta imagem.</p>
+                    <p class="text-xs text-slate-500">Verifique sua conexão ou tente novamente mais tarde.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript para controle do Modal -->
+    <script>
+        const modal = document.getElementById('imageModal');
+        const modalCard = document.getElementById('modalCard');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalImage = document.getElementById('modalImage');
+        const modalSpinner = document.getElementById('modalSpinner');
+        const modalError = document.getElementById('modalError');
+
+        // Função para abrir o modal
+        function openModal(name, imageUrl) {
+            modalTitle.innerText = name;
+            
+            // Reset dos estados da imagem e do spinnner
+            modalImage.classList.add('hidden');
+            modalError.classList.add('hidden');
+            modalError.classList.remove('flex');
+            modalSpinner.classList.remove('hidden');
+            modalSpinner.classList.add('flex');
+
+            // Exibir estrutura do modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // Forçar reflow para acionar a animação CSS
+            setTimeout(() => {
+                modalCard.classList.remove('scale-95', 'opacity-0');
+                modalCard.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            // Carregar imagem
+            const img = new Image();
+            img.src = imageUrl;
+            
+            img.onload = () => {
+                modalImage.src = imageUrl;
+                modalSpinner.classList.add('hidden');
+                modalSpinner.classList.remove('flex');
+                modalImage.classList.remove('hidden');
+            };
+
+            img.onerror = () => {
+                modalSpinner.classList.add('hidden');
+                modalSpinner.classList.remove('flex');
+                modalError.classList.remove('hidden');
+                modalError.classList.add('flex');
+            };
+        }
+
+        // Função para fechar o modal
+        function closeModal() {
+            modalCard.classList.remove('scale-100', 'opacity-100');
+            modalCard.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                modalImage.src = '';
+            }, 200);
+        }
+
+        // Fechar ao clicar no fundo escuro
+        function closeModalOnOverlay(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Fechar ao pressionar a tecla ESC
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
